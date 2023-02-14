@@ -1,3 +1,5 @@
+from sys import argv
+
 """
 ✔ Создайте модуль и напишите в нём функцию, которая получает на вход дату в формате DD.MM.YYYY
 ✔ Функция возвращает истину, если дата может существовать или ложь, если такая дата невозможна.
@@ -51,7 +53,15 @@ def check_date(date: str) -> bool:
     return False
 
 
-print(check_date('24.02.2023'))
-print(check_date('29.02.2023'))
-print(check_date('29.02.2020'))
-print(check_date('01.01.0001'))
+if __name__ == '__main__':
+    print(check_date('24.02.2023'))
+    print(check_date('29.02.2023'))
+    print(check_date('29.02.2020'))
+    print(check_date('01.01.0001'))
+
+    """
+    В модуль с проверкой даты добавьте возможность запуска 
+    в терминале с передачей даты на проверку.
+    """
+
+    print(check_date(*argv[1:]))
