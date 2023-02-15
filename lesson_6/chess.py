@@ -1,3 +1,5 @@
+from random import randrange, sample
+
 """
 ✔ Добавьте в пакет, созданный на семинаре шахматный модуль.
 Внутри него напишите код, решающий задачу о 8 ферзях.
@@ -6,9 +8,22 @@
 есть ли среди них пара бьющих друг друга. Программа получает на вход
 восемь пар чисел, каждое число от 1 до 8 - координаты 8 ферзей. Если
 ферзи не бьют друг друга верните истину, а если бьют — ложь.
+✔ Напишите функцию в шахматный модуль. Используйте генератор 
+случайных чисел для случайной расстановки ферзей в задаче выше. 
+Проверяйте различный случайные варианты и выведите 4 успешных 
+расстановки.
 """
 
+__all__ = [
+    'eight_queens',
+    'coords_gen',
+]
+
 _SIZE = 8
+_START = 1
+_STOP = _SIZE + 1
+_LIMIT = 4
+_QUEEN = 1
 _UP = [1, 2, 3, 4, 5, 6, 7, 8]
 _DOWN = [8, 7, 6, 5, 4, 3, 2, 1]
 
@@ -21,19 +36,52 @@ def eight_queens(coords: list[tuple]) -> bool:
     for first_coord, second_coord in coords:
         line_coords.add(first_coord)
         column_coords.add(second_coord)
-        column_coords_list.append(second_coord)
+        column_coords_list.append(first_coord)
 
+    # Проверяем, что ферзи стоят на разных горизонталях и вертикалях: 8 различных координат - (проверка на ход ладьи)
     if len(line_coords) != _SIZE or len(column_coords) != _SIZE:
         return False
 
+    # Решение Гаусса: ферзи можно расставить, если сумма заданных координат вертикалей со списком чисел от 1 до 8 по
+    # возрастанию и убыванию даёт уникальные значения: 8 различных вариантов - (проверка на ход слона)
     up_result = {num_1 + num_2 for num_1, num_2 in zip(_UP, column_coords_list)}
     down_result = {num_1 + num_2 for num_1, num_2 in zip(_DOWN, column_coords_list)}
 
     if len(up_result) != _SIZE or len(down_result) != _SIZE:
         return False
 
+    print(f'{up_result=}, {down_result=}')
     return True
 
 
+def coords_gen() -> iter:
+    # Долгий путь
+    # coords = [(randrange(_START, _STOP), randrange(_START, _STOP)) for _ in range(_SIZE)]
+    # Быстрый путь
+    coords = [(line_coord, column_coord) for line_coord, column_coord in zip(sample(_UP, _SIZE), sample(_UP, _SIZE))]
+    yield coords
+
+
+def board_painter(coords: tuple) -> None:
+    board = [[0] * _SIZE for _ in range(_SIZE)]
+
+    for line_coord, column_coord in coords:
+        board[line_coord - 1][column_coord - 1] = _QUEEN
+
+    print(*board, sep='\n')
+
+
 if __name__ == '__main__':
-    print(eight_queens([(1, 3), (2, 7), (3, 2), (4, 8), (5, 5), (6, 1), (7, 4), (8, 6)]))
+    results = set()
+
+    while True:
+        for coords in coords_gen():
+            if eight_queens(coords):
+                results.add(tuple(coords))
+        if len(results) == _LIMIT:
+            print(f'Успешные комбинации:', *results, sep='\n')
+            break
+
+    for coords in results:
+        board_painter(coords)
+        print('*' * 50)
