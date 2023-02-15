@@ -33,31 +33,33 @@ def eight_queens(coords: list[tuple]) -> bool:
     column_coords = set()
     column_coords_list = []
 
+    coords.sort(key=lambda x: x[0])  # Сортировка координат по горизонталям сверху вниз
+
     for first_coord, second_coord in coords:
         line_coords.add(first_coord)
         column_coords.add(second_coord)
-        column_coords_list.append(first_coord)
+        column_coords_list.append(second_coord)
 
     # Проверяем, что ферзи стоят на разных горизонталях и вертикалях: 8 различных координат - (проверка на ход ладьи)
     if len(line_coords) != _SIZE or len(column_coords) != _SIZE:
         return False
 
-    # Решение Гаусса: ферзи можно расставить, если сумма заданных координат вертикалей со списком чисел от 1 до 8 по
-    # возрастанию и убыванию даёт уникальные значения: 8 различных вариантов - (проверка на ход слона)
-    up_result = {num_1 + num_2 for num_1, num_2 in zip(_UP, column_coords_list)}
-    down_result = {num_1 + num_2 for num_1, num_2 in zip(_DOWN, column_coords_list)}
+    # Решение Гаусса: ферзи можно расставить, если сумма заданных отсортированных координат вертикалей со списком чисел
+    # от 1 до 8 по возрастанию и убыванию даёт уникальные значения: 8 различных вариантов - (проверка на ход слона)
+    column_up_result = {num_1 + num_2 for num_1, num_2 in zip(_UP, column_coords_list)}
+    column_down_result = {num_1 + num_2 for num_1, num_2 in zip(_DOWN, column_coords_list)}
 
-    if len(up_result) != _SIZE or len(down_result) != _SIZE:
+    if len(column_up_result) != _SIZE or len(column_down_result) != _SIZE:
         return False
 
-    print(f'{up_result=}, {down_result=}')
     return True
 
 
 def coords_gen() -> iter:
     # Долгий путь
     # coords = [(randrange(_START, _STOP), randrange(_START, _STOP)) for _ in range(_SIZE)]
-    # Быстрый путь
+
+    # Быстрый путь: сразу отсекли варианты хода ладьи
     coords = [(line_coord, column_coord) for line_coord, column_coord in zip(sample(_UP, _SIZE), sample(_UP, _SIZE))]
     yield coords
 
