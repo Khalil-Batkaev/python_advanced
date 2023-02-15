@@ -16,7 +16,6 @@ from random import randrange, sample
 
 __all__ = [
     'eight_queens',
-    'coords_gen',
 ]
 
 _SIZE = 8
@@ -35,10 +34,10 @@ def eight_queens(coords: list[tuple]) -> bool:
 
     coords.sort(key=lambda x: x[0])  # Сортировка координат по горизонталям сверху вниз
 
-    for first_coord, second_coord in coords:
-        line_coords.add(first_coord)
-        column_coords.add(second_coord)
-        column_coords_list.append(second_coord)
+    for line_coord, column_coord in coords:
+        line_coords.add(line_coord)
+        column_coords.add(column_coord)
+        column_coords_list.append(column_coord)
 
     # Проверяем, что ферзи стоят на разных горизонталях и вертикалях: 8 различных координат - (проверка на ход ладьи)
     if len(line_coords) != _SIZE or len(column_coords) != _SIZE:
@@ -56,12 +55,13 @@ def eight_queens(coords: list[tuple]) -> bool:
 
 
 def coords_gen() -> iter:
-    # Долгий путь
-    # coords = [(randrange(_START, _STOP), randrange(_START, _STOP)) for _ in range(_SIZE)]
+    while True:
+        # Долгий путь
+        # coords = [(randrange(_START, _STOP), randrange(_START, _STOP)) for _ in range(_SIZE)]
 
-    # Быстрый путь: сразу отсекли варианты хода ладьи
-    coords = [(line_coord, column_coord) for line_coord, column_coord in zip(sample(_UP, _SIZE), sample(_UP, _SIZE))]
-    yield coords
+        # Быстрый путь: сразу отсекли варианты хода ладьи
+        coords = [(line_coord, column_coord) for line_coord, column_coord in zip(sample(_UP, _SIZE), sample(_UP, _SIZE))]
+        yield coords
 
 
 def board_painter(coords: tuple) -> None:
@@ -76,10 +76,9 @@ def board_painter(coords: tuple) -> None:
 if __name__ == '__main__':
     results = set()
 
-    while True:
-        for coords in coords_gen():
-            if eight_queens(coords):
-                results.add(tuple(coords))
+    for coords in coords_gen():
+        if eight_queens(coords):
+            results.add(tuple(coords))
         if len(results) == _LIMIT:
             print(f'Успешные комбинации:', *results, sep='\n')
             break
