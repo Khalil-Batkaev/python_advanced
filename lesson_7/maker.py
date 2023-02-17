@@ -27,7 +27,7 @@ def make_files(directory: Path, extension: str, min_name: int = 6, max_name: int
     for _ in range(count):
         name = ''.join(choices(symbols, k=randint(min_name, max_name)))
         data = bytes(randint(0, 255) for _ in range(randint(min_size, max_size)))
-        file_path = Path(directory, f'{name}.{extension}')
+        file_path = directory.joinpath(f'{name}.{extension}')
 
         if not file_path.exists():
             with open(file_path, 'wb') as f:
@@ -65,7 +65,8 @@ if __name__ == '__main__':
         'mp4': 2,
         'gif': 1,
         'png': 4,
+        'txt': 7,
+        'bin': 5,
     }
 
     maker_files(file_extensions, Path('files'))
-    maker_files(file_extensions)
