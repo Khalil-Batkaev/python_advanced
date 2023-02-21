@@ -2,6 +2,9 @@ import json
 import os
 from pathlib import Path
 
+__all__ = [
+    'json_gen',
+]
 
 def json_gen(file: Path):
     result = {}

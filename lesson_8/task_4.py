@@ -2,8 +2,12 @@ import csv
 import json
 from pathlib import Path
 
+__all__ = [
+    'my_csv2json',
+]
 
-def func(in_file: Path, out_file: Path):
+
+def my_csv2json(in_file: Path, out_file: Path):
     with open(in_file, 'r', encoding='utf-8') as f, \
             open(out_file, 'a', encoding='utf-8') as out_f:
         csv_reader = csv.reader(f)
@@ -38,4 +42,4 @@ def csv2json(file_out: Path, file_in: Path) -> None:
 
 
 if __name__ == '__main__':
-    func(Path('out.csv'), Path('json_from_csv.json'))
+    my_csv2json(Path('out.csv'), Path('json_from_csv.json'))
