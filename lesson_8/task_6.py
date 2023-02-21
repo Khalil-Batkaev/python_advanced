@@ -2,6 +2,10 @@ import csv
 import pickle
 from pathlib import Path
 
+__all__ = [
+    'from_pickle_to_csv',
+]
+
 """
 Напишите функцию, которая преобразует pickle файл
 хранящий список словарей в табличный csv файл.
