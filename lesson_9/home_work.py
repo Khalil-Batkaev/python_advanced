@@ -17,6 +17,21 @@ __all__ = [
 """
 
 
+def json_gen(directory: Path = Path('results.json')):
+    def deco(func: Callable):
+        def wrapper(*args):
+            result = func(*args)
+            data = {str(args): result}
+
+            with open(directory, 'a', encoding='utf-8') as f:
+                json.dump(data, f, indent=2)
+            return result
+
+        return wrapper
+
+    return deco
+
+
 def solve_starter(directory: Path = Path('numbers.csv')):
     def deco(func: Callable):
         results = []
@@ -29,7 +44,9 @@ def solve_starter(directory: Path = Path('numbers.csv')):
                     result = func(a, b, c)
                     results.append(result)
             return results
+
         return wrapper
+
     return deco
 
 
@@ -48,6 +65,7 @@ def csv_maker(directory: Path):
 
 
 @solve_starter()
+@json_gen()
 def quadratic_solve(a: int, b: int, c: int) -> tuple | float | str:
     if a == 0 or b == 0 or c == 0:
         return f'Квадратное уравнение неполное...используйте другую функцию'
@@ -55,7 +73,7 @@ def quadratic_solve(a: int, b: int, c: int) -> tuple | float | str:
     d = b ** 2 - 4 * a * c
 
     if d < 0:
-        return f'Квадратное уравнение не имеет решения'
+        return f'not solve'
     if d == 0:
         return -b / 2 * a
 
@@ -65,7 +83,5 @@ def quadratic_solve(a: int, b: int, c: int) -> tuple | float | str:
 
 
 if __name__ == '__main__':
-    # csv_maker(Path('numbers.csv'))
+    csv_maker(Path('numbers.csv'))
     print(quadratic_solve())
-
-
