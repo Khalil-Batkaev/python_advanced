@@ -1,6 +1,7 @@
 import csv
 import json
 from pathlib import Path
+from typing import Callable
 from random import randint
 
 __all__ = [
@@ -14,6 +15,22 @@ __all__ = [
 - декоратор, который запускает решение уравнения из csv
 - декоратор, который сохраняет параметры и результат в json
 """
+
+
+def solve_starter(directory: Path = Path('numbers.csv')):
+    def deco(func: Callable):
+        results = []
+
+        def wrapper():
+            with open(directory, 'r', encoding='utf-8', newline='') as f:
+                csv_file = csv.reader(f)
+                for line in csv_file:
+                    a, b, c = [int(num) for num in line]
+                    result = func(a, b, c)
+                    results.append(result)
+            return results
+        return wrapper
+    return deco
 
 
 def csv_maker(directory: Path):
@@ -30,6 +47,7 @@ def csv_maker(directory: Path):
         csv_writer.writerows(nums)
 
 
+@solve_starter()
 def quadratic_solve(a: int, b: int, c: int) -> tuple | float | str:
     if a == 0 or b == 0 or c == 0:
         return f'Квадратное уравнение неполное...используйте другую функцию'
@@ -48,3 +66,6 @@ def quadratic_solve(a: int, b: int, c: int) -> tuple | float | str:
 
 if __name__ == '__main__':
     # csv_maker(Path('numbers.csv'))
+    print(quadratic_solve())
+
+
