@@ -1,5 +1,9 @@
 from lesson_10 import task_5 as animals
 
+__all__ = [
+    'AnimalFactory',
+]
+
 """
 Доработаем задачи 5-6. Создайте класс-фабрику. 
 ○ Класс принимает тип животного (название одного из созданных классов) 
@@ -10,7 +14,6 @@ from lesson_10 import task_5 as animals
 
 
 class AnimalFactory:
-
     def __init__(self, animal_type):
         self.animal_type = animal_type
 
