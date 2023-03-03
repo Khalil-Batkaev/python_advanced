@@ -1,3 +1,8 @@
+__all__ = [
+    'Archive',
+]
+
+
 class Archive:
     """При первом запуске создает экземпляр класса, при повторном - добавляет в архив прежние данные."""
     instance = None
@@ -34,4 +39,3 @@ if __name__ == '__main__':
     print(d3.text, d3.text_archive)
     print(d3)
     print(f'{d3 = }')
-
