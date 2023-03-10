@@ -5,11 +5,11 @@ __all__ = [
 ]
 
 
-class StudentBaseException(Exception):
+class BaseStudentException(Exception):
     pass
 
 
-class InvalidNameException(StudentBaseException):
+class InvalidNameException(BaseStudentException):
     def __init__(self, name, value):
         self.name = name
         self.value = value
@@ -18,7 +18,7 @@ class InvalidNameException(StudentBaseException):
         return f'Имя пользователя {self.value} не соответствует требованиям параметра {self.name}'
 
 
-class InvalidSubjectException(StudentBaseException):
+class InvalidSubjectException(BaseStudentException):
     def __init__(self, subject, full_name):
         self.subject = subject
         self.full_name = full_name
@@ -27,7 +27,7 @@ class InvalidSubjectException(StudentBaseException):
         return f'Предмет {self.subject} не входит в учебную программу студента {self.full_name}'
 
 
-class InvalidGradeException(StudentBaseException):
+class InvalidGradeException(BaseStudentException):
     def __init__(self, grade, min_lvl, max_lvl):
         self.grade = grade
         self.min_lvl = min_lvl
