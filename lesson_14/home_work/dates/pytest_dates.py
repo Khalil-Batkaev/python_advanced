@@ -17,6 +17,7 @@ def test_checker():
     assert check_date('24.02.2023') == True
     assert check_date('29.02.2023') == False
     assert check_date('29.02.2020') == True
+    assert check_date('29.02.1900') == False
 
 
 if __name__ == '__main__':
