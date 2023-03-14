@@ -1,1 +1,1 @@
-from .matrix_doctest import *
+from .matrix import *
