@@ -27,6 +27,9 @@ class Matrix:
         self._column_size = len(self.matrix[0])
 
     def __eq__(self, other):
+        if self._line_size != other.get_size()[0] or self._column_size != other.get_size()[1]:
+            return False
+
         for i in range(self._line_size):
             for j in range(self._column_size):
                 if self.matrix[i][j] != other.matrix[i][j]:
@@ -57,4 +60,5 @@ class Matrix:
     def __repr__(self):
         return f'Matrix({self.matrix})'
 
-
+    def get_size(self):
+        return self._line_size, self._column_size
